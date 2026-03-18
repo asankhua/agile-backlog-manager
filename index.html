@@ -345,7 +345,7 @@
             container.innerHTML = '';
             COLUMNS.forEach(col => {
                 const colTasks = tasks.filter(t => t.status === col.id);
-                const colPoints = colTasks.reduce((s, t) => s + (t.points || 0), 0);
+                const colPoints = colTasks.reduce((s, t) => s + getEffectivePoints(t), 0);
                 const colDiv = document.createElement('div');
                 colDiv.className = 'w-80 flex flex-col h-full max-h-[calc(100vh-280px)] shrink-0 text-left';
                 colDiv.innerHTML = `<div class="flex items-center justify-between mb-4 px-1 text-left"><h2 class="font-black text-slate-600 text-[10px] uppercase tracking-widest flex items-center gap-2.5 text-left text-left"><i data-feather="${col.icon}" class="w-4 h-4 ${col.color}"></i> ${col.title}</h2><span class="bg-white border border-slate-200 text-slate-400 text-[10px] font-black px-2 py-0.5 rounded-lg shadow-sm text-left">${colPoints}p</span></div><div id="${col.id}" class="flex-1 overflow-y-auto custom-scroll rounded-2xl p-2.5 bg-slate-200/20 flex flex-col gap-4 min-h-[200px] border border-transparent transition-all" ondrop="drop(event, '${col.id}')" ondragover="allowDrop(event)" ondragleave="dragLeave(event)"></div>`;
@@ -385,13 +385,13 @@
 
         function updateDashboard() {
             const activeTasks = tasks.filter(t => t.status !== 'backlog');
-            const totalActivePoints = activeTasks.reduce((s,t) => s + (t.points || 0), 0);
+            const totalActivePoints = activeTasks.reduce((s,t) => s + getEffectivePoints(t), 0);
             const totalCap = team.reduce((s, u) => s + (u.capacity || 0), 0);
             const capText = document.getElementById('capacity-text'); if (capText) capText.innerText = `${totalActivePoints} / ${totalCap} pts`;
             const capTracker = document.getElementById('capacity-tracker'); if (capTracker) capTracker.className = `flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-bold shadow-sm transition-colors ${totalActivePoints > totalCap ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-white border-slate-200 text-emerald-700'}`;
             const workload = document.getElementById('team-workload'); if (!workload) return;
             workload.innerHTML = team.map(u => {
-                const userPoints = tasks.filter(t => t.assignee === u.id && t.status !== 'backlog').reduce((s, t) => s + (t.points || 0), 0);
+                const userPoints = tasks.filter(t => t.assignee === u.id && t.status !== 'backlog').reduce((s, t) => s + getEffectivePoints(t), 0);
                 const pct = Math.min(100, Math.round((userPoints / (u.capacity || 1)) * 100));
                 return `<div class="flex-1 min-w-[160px] bg-white border ${userPoints > u.capacity ? 'border-rose-200 bg-rose-50' : 'border-slate-200'} p-4 rounded-2xl shadow-sm text-left transition-all"><div class="flex justify-between items-center mb-2.5 text-[11px] font-black uppercase tracking-tight text-left"><div class="flex items-center gap-2.5 truncate text-left"><div class="w-6 h-6 rounded-full ${u.color} text-white flex items-center justify-center text-[9px] font-bold shadow-sm text-left text-left">${u.initial}</div><span class="truncate text-left">${u.name}</span></div><span class="${userPoints > u.capacity ? 'text-rose-600' : 'text-slate-400'} tabular-nums text-right text-left">${userPoints}/${u.capacity}</span></div><div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden shadow-inner text-left"><div class="h-full ${userPoints > u.capacity ? 'bg-rose-500' : 'bg-indigo-600'} transition-all duration-700 text-left" style="width: ${pct}%"></div></div></div>`;
             }).join('');
@@ -402,7 +402,7 @@
         function openBurndown() {
             const modal = document.getElementById('burndown-modal'); if(!modal) return;
             modal.classList.remove('hidden');
-            const items = tasks.filter(t => t.status !== 'backlog'), total = items.reduce((s,t)=>s+(t.points||0),0) || 1, done = items.filter(t => t.status === 'done').reduce((s,t)=>s+(t.points||0),0);
+            const items = tasks.filter(t => t.status !== 'backlog'), total = items.reduce((s,t)=>s+getEffectivePoints(t),0) || 1, done = items.filter(t => t.status === 'done').reduce((s,t)=>s+getEffectivePoints(t),0);
             const remaining = total - done, days = sprintConfig.days || 14, curDay = sprintConfig.current;
             const w = 500, h = 200, pad = 30, cW = w - pad*2, cH = h - pad*2;
             const stepX = cW / days;
@@ -527,7 +527,7 @@
         }
         function handleSubmitSprintCompletion() {
             const done = tasks.filter(t => t.status === 'done');
-            sprintHistory.push({ number: sprintConfig.number, items: [...done], points: done.reduce((s,t)=>s+(t.points||0),0), retroGood: document.getElementById('retro-good').value, retroImprove: document.getElementById('retro-improve').value });
+            sprintHistory.push({ number: sprintConfig.number, items: [...done], points: done.reduce((s,t)=>s+getEffectivePoints(t),0), retroGood: document.getElementById('retro-good').value, retroImprove: document.getElementById('retro-improve').value });
             tasks = tasks.filter(t => t.status !== 'done');
             sprintConfig.number++; sprintConfig.current = 1;
             tasks.forEach(t => { if(t.status !== 'backlog') t.sprint = sprintConfig.number; });
@@ -538,7 +538,7 @@
         function openReportModal() {
             const modal = document.getElementById('report-modal'); if(!modal) return;
             const active = tasks.filter(t => t.status !== 'backlog'), done = active.filter(t => t.status === 'done');
-            let r = `Sprint Update: S${sprintConfig.number}\n----------------------------------\nShipped: ${done.reduce((s,t)=>s+(t.points||0),0)}p\n\nLog:\n` + active.map(t => `- [${t.status.toUpperCase()}] ${t.id}: ${t.title}`).join('\n');
+            let r = `Sprint Update: S${sprintConfig.number}\n----------------------------------\nShipped Points: ${done.reduce((s,t)=>s+getEffectivePoints(t),0)}p\n\nActive Items:\n` + active.map(t => `- [${t.status.toUpperCase()}] ${t.id}: ${t.title} (${getEffectivePoints(t)}p)`).join('\n');
             document.getElementById('report-subject').value = `Agile Brief: Sprint ${sprintConfig.number}`;
             document.getElementById('report-text-area').value = r;
             modal.classList.remove('hidden'); feather.replace();
@@ -560,7 +560,20 @@
         function deprioritizeTask(id) { const t = tasks.find(x => x.id === id); if(t) { t.status = 'backlog'; t.sprint = null; closeModal(); refreshView(); } }
         function planTask(id) { const t = tasks.find(x => x.id === id); if(t) { t.status = 'todo'; t.sprint = sprintConfig.number; refreshView(); } }
         function createNewSprint() { if(confirm("Ready to start cycle?")) { sprintConfig.number++; sprintConfig.current = 1; savePersistence(); refreshView(); } }
-        function sortByRice() { tasks.sort((a,b) => (b.points||0) - (a.points||0)); refreshView(); }
+        function getEffectivePoints(task) {
+            if (!task) return 0;
+            
+            // For stories and bugs, use their own points
+            if (task.type === 'story' || task.type === 'bug') {
+                return parseInt(task.points) || 0;
+            }
+            
+            // For features and epics, sum up children points
+            const children = tasks.filter(t => t.parentId === task.id);
+            return children.reduce((sum, child) => sum + getEffectivePoints(child), 0);
+        }
+
+        function sortByRice() { tasks.sort((a,b) => getEffectivePoints(b) - getEffectivePoints(a)); refreshView(); }
         function drop(e, colId) { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); const tid = e.dataTransfer.getData("text"); const t = tasks.find(x => x.id === tid); if(t && t.status !== colId) { t.status = colId; if(!t.sprint) t.sprint = sprintConfig.number; refreshView(); } }
         function allowDrop(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
         function dragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
