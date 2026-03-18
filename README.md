@@ -282,31 +282,3 @@ We welcome contributions! Please follow these guidelines:
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **Tailwind CSS** - For the amazing utility-first CSS framework
-- **Feather Icons** - For the beautiful icon set
-- **Firebase** - For the backend services (when used)
-- **GitHub** - For hosting and version control
-
-## 📞 Support
-
-- **Documentation**: Check the [ARCHITECTURE.md](ARCHITECTURE.md) for technical details
-- **Issues**: Report bugs via GitHub Issues
-- **Discussions**: Use GitHub Discussions for questions and ideas
-- **Email**: Contact at [your-email@example.com]
-
----
-
-**Built with ❤️ for agile teams who value simplicity and productivity**
-
----
-
-## 🌟 Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/agile-backlog-manager-pro&type=Date)](https://star-history.com/#yourusername/agile-backlog-manager-pro&Date)
-
----
-
-*If you find this tool helpful, please consider giving it a ⭐ on GitHub!*
