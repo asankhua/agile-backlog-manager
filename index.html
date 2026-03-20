@@ -168,11 +168,9 @@
             <div class="flex items-center gap-2 text-left">
                 <span class="text-slate-300 font-bold uppercase tracking-widest text-[9px] text-left">© 2024</span>
                 <span class="text-slate-900 font-bold text-left">Ashish Kumar Sankhua</span>
-            </div>
-            <div class="h-3 w-[1px] bg-slate-200"></div>
-            <div class="flex items-center gap-4 text-left">
-                <span class="hover:text-indigo-600 transition-colors cursor-pointer font-semibold text-left">Security Portal</span>
-                <span class="hover:text-indigo-600 transition-colors cursor-pointer font-semibold text-left text-left">Enterprise Stable</span>
+                <span class="text-slate-400 text-xs">All Rights Reserved</span>
+                <span class="text-slate-400">|</span>
+                <a href="/LICENSE" class="text-slate-400 hover:text-indigo-600 transition-colors underline text-xs font-medium">MIT License</a>
             </div>
         </div>
         <div class="flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full border border-slate-100 shadow-inner">
@@ -211,6 +209,21 @@
                 <div class="text-left text-left text-left">
                     <label class="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1 text-left text-left text-left">Summary Title</label>
                     <input type="text" id="task-title" required class="w-full px-5 py-3 border border-slate-200 rounded-xl focus:ring-4 ring-indigo-500/10 outline-none transition-all font-bold text-slate-800 shadow-inner text-left text-left text-left text-left text-left">
+                </div>
+
+                <div class="space-y-4 text-left text-left text-left">
+                    <label class="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1 text-left text-left">Quick Actions</label>
+                    <div class="flex gap-2 flex-wrap text-left text-left text-left">
+                        <button type="button" onclick="applyTemplate('bug')" class="px-3 py-1.5 bg-rose-50 text-rose-600 border border-rose-200 rounded-lg text-xs font-bold hover:bg-rose-100 transition-all">
+                            🐛 Bug Template
+                        </button>
+                        <button type="button" onclick="applyTemplate('feature')" class="px-3 py-1.5 bg-blue-50 text-blue-600 border border-blue-200 rounded-lg text-xs font-bold hover:bg-blue-100 transition-all">
+                            ✨ Feature Template
+                        </button>
+                        <button type="button" onclick="applyTemplate('spike')" class="px-3 py-1.5 bg-purple-50 text-purple-600 border border-purple-200 rounded-lg text-xs font-bold hover:bg-purple-100 transition-all">
+                            🔬 Spike Template
+                        </button>
+                    </div>
                 </div>
 
                 <div class="text-left text-left text-left">
