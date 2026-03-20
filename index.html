@@ -170,7 +170,7 @@
                 <span class="text-slate-900 font-bold text-left">Ashish Kumar Sankhua</span>
                 <span class="text-slate-400 text-xs">All Rights Reserved</span>
                 <span class="text-slate-400">|</span>
-                <a href="/LICENSE" class="text-slate-400 hover:text-indigo-600 transition-colors underline text-xs font-medium">MIT License</a>
+                <a href="./LICENSE" class="text-slate-400 hover:text-indigo-600 transition-colors underline text-xs font-medium">License</a>
             </div>
         </div>
         <div class="flex items-center gap-2 px-3 py-1 bg-slate-50 rounded-full border border-slate-100 shadow-inner">
@@ -601,6 +601,44 @@
             const a = document.createElement('a'); a.href = `mailto:${to}?subject=${encodeURIComponent(sub)}&body=${encodeURIComponent(body)}`; a.target="_blank"; a.click();
         }
         function copyReportToClipboard() { const ta = document.getElementById('report-text-area'); if(ta) { ta.select(); document.execCommand('copy'); } }
+
+        // --- TEMPLATES ---
+        function applyTemplate(type) {
+            const titleField = document.getElementById('task-title');
+            const descField = document.getElementById('task-desc');
+            const typeField = document.getElementById('task-type');
+            const pointsField = document.getElementById('task-points');
+            const priorityField = document.getElementById('task-priority');
+            
+            // Set task type
+            typeField.value = type;
+            toggleHierarchyInputs();
+            
+            switch(type) {
+                case 'bug':
+                    titleField.value = 'Bug: ';
+                    descField.value = '**Steps to Reproduce:**\n1. ...\n\n**Expected Behavior:**\n...\n\n**Actual Behavior:**\n...\n\n**Environment:**\n- Browser: ...\n- OS: ...\n\n**Severity:**\n- [ ] Critical\n- [ ] High\n- [ ] Medium\n- [ ] Low';
+                    pointsField.value = '3';
+                    priorityField.value = 'high';
+                    break;
+                case 'feature':
+                    titleField.value = 'Feature: ';
+                    descField.value = '**User Story:**\nAs a [user type], I want [goal] so that [benefit].\n\n**Acceptance Criteria:**\n- [ ] ...\n- [ ] ...\n- [ ] ...\n\n**Technical Notes:**\n...\n\n**Dependencies:**\n- ...';
+                    pointsField.value = '5';
+                    priorityField.value = 'medium';
+                    break;
+                case 'spike':
+                    titleField.value = 'Spike: ';
+                    descField.value = '**Research Objective:**\n...\n\n**Questions to Answer:**\n- ...\n- ...\n- ...\n\n**Time Box:**\nX hours/days\n\n**Deliverables:**\n- [ ] Research findings\n- [ ] Technical recommendation\n- [ ] Proof of concept (if needed)\n- [ ] Updated documentation\n\n**Success Criteria:**\n- [ ] Clear decision made\n- [ ] Technical approach validated\n- [ ] Risks identified and mitigated';
+                    pointsField.value = '2';
+                    priorityField.value = 'medium';
+                    break;
+            }
+            
+            // Focus on title field for user to complete
+            titleField.focus();
+            titleField.setSelectionRange(titleField.value.length, titleField.value.length);
+        }
 
         // --- CLOSING & HELPERS ---
         function closeSettings() { document.getElementById('settings-modal').classList.add('hidden'); }
