@@ -385,7 +385,7 @@
         // --- RENDERERS ---
         function renderBacklog() {
             const list = document.getElementById('backlog-list'); if (!list) return;
-            const blTasks = tasks.filter(t => t.status === 'backlog');
+            const blTasks = getFilteredTasks().filter(t => t.status === 'backlog');
             list.innerHTML = blTasks.length === 0 ? `<div class="bg-white border-2 border-dashed border-slate-200 rounded-3xl py-16 text-center text-slate-400 font-bold uppercase text-[10px] tracking-widest">No Items in Backlog</div>` : blTasks.map(t => `<div class="flex items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 hover:border-indigo-400 hover:shadow-xl transition-all cursor-pointer group text-left" onclick="openEditModal('${t.id}')"><div class="flex-1 min-w-0 flex items-center gap-4 text-left"><span class="ticket-id-badge">${t.id}</span><h4 class="font-bold text-slate-800 text-sm truncate">${t.title}</h4></div><div class="flex items-center gap-6 w-60 justify-end shrink-0 text-left"><span class="text-[11px] font-black text-slate-400 tabular-nums uppercase">${t.type} • ${t.points}p</span><button onclick="event.stopPropagation(); planTask('${t.id}')" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-md text-left">Plan S${sprintConfig.number}</button></div></div>`).join('');
             
             const hList = document.getElementById('completed-sprints-list'); if (!hList) return;
@@ -393,11 +393,31 @@
             feather.replace(); updateDashboard();
         }
 
+        // --- FILTERING ---
+        function getFilteredTasks() {
+            const typeFilter = document.getElementById('filter-type')?.value || 'all';
+            const assigneeFilter = document.getElementById('filter-assignee')?.value || 'all';
+            
+            return tasks.filter(task => {
+                // Type filter
+                if (typeFilter !== 'all' && task.type !== typeFilter) {
+                    return false;
+                }
+                
+                // Assignee filter
+                if (assigneeFilter !== 'all' && task.assignee !== assigneeFilter) {
+                    return false;
+                }
+                
+                return true;
+            });
+        }
+
         function renderBoard() {
             const container = document.getElementById('board-columns-container'); if(!container) return;
             container.innerHTML = '';
             COLUMNS.forEach(col => {
-                const colTasks = tasks.filter(t => t.status === col.id);
+                const colTasks = getFilteredTasks().filter(t => t.status === col.id);
                 const colPoints = colTasks.reduce((s, t) => s + getEffectivePoints(t), 0);
                 const colDiv = document.createElement('div');
                 colDiv.className = 'w-80 flex flex-col h-full max-h-[calc(100vh-280px)] shrink-0 text-left';
@@ -431,7 +451,7 @@
         }
 
         function renderRoadmap() {
-            const epics = tasks.filter(t => t.type === 'epic');
+            const epics = getFilteredTasks().filter(t => t.type === 'epic');
             document.getElementById('roadmap-content').innerHTML = epics.length === 0 ? `<div class="py-20 text-center text-slate-300 uppercase font-black text-xs tracking-widest text-left">No Strategic Epics</div>` : `<h2 class="text-3xl font-black text-slate-900 mb-10 tracking-tight text-left">Strategic Roadmap</h2>` + epics.map(e => `<div class="bg-white border border-slate-200 rounded-3xl p-8 mb-6 shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all cursor-pointer text-left" onclick="openEditModal('${e.id}')"><div class="flex items-center gap-4 mb-3 text-left"><span class="ticket-id-badge">EPIC</span><h3 class="text-2xl font-bold tracking-tight text-left">${e.title}</h3></div><div class="flex gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest text-left text-left"><i data-feather="box" class="w-3.5 h-3.5 text-left"></i> ${tasks.filter(f=>f.parentId === e.id).length} Connected Features</div></div>`).join('');
             feather.replace();
         }
