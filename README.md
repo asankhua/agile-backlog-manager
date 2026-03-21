@@ -1,3 +1,5 @@
+https://github.com/user-attachments/assets/60fd5ac4-afff-4222-8050-da744ad2dd5a
+
 # Agile Backlog Manager Pro 🚀
 
 A modern, feature-rich agile project management tool built with vanilla JavaScript and Tailwind CSS. Perfect for teams who want a simple yet powerful solution for sprint planning, task tracking, and team collaboration.
