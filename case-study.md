@@ -1,4 +1,4 @@
-# **Agile Backlog Manager Pro**
+**Agile Backlog Manager Pro**
 *Intelligent Sprint Planning & Task Management System for Agile Teams*
 
 **Author:** Ashish Kumar Sankhua | Product Manager
