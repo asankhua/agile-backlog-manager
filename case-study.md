@@ -1,10 +1,10 @@
-# Agile Backlog Manager Pro
-## AI-Powered Sprint Planning & Task Management
+# [Product Name]
+## [Brief Value Proposition - e.g., "Professional resumes in minutes, not hours"]
 
 **Product Case Study**  
-**Author:** [Your Name]  
-**Date:** [Date]  
-**Status:** [Status - e.g., Production Ready / Beta / MVP Complete]
+**Author:** Ashish Kumar Sankhua | Product Manager  
+**Date:** March 27, 2026  
+**Status:** Production Ready
 
 ---
 
