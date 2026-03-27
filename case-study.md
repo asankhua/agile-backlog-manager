@@ -1,5 +1,5 @@
-# **[Product Name]**
-*[Tagline - e.g., "Facts-Only Investment Information Assistant for HDFC Mutual Funds"]*
+# **Agile Backlog Manager Pro**
+*AI-Powered Sprint Planning & Task Management*
 
 **Author:** Ashish Kumar Sankhua | Product Manager  
 **Date:** March 2026 | **Status:** Production Ready
