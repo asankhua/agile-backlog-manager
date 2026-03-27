@@ -1,10 +1,8 @@
-# [Product Name]
-## [Brief Value Proposition - e.g., "Professional resumes in minutes, not hours"]
+# **[Product Name]**
+*[Tagline - e.g., "Facts-Only Investment Information Assistant for HDFC Mutual Funds"]*
 
-**Product Case Study**  
 **Author:** Ashish Kumar Sankhua | Product Manager  
-**Date:** March 27, 2026  
-**Status:** Production Ready
+**Date:** March 2026 | **Status:** Production Ready
 
 ---
 
